@@ -1,0 +1,181 @@
+﻿@model OHSB.Domain.SeatMaster.SeatEntity
+@{
+    ViewData["Title"] = "ViewSeatInfo";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Resultdata as List<OHSB.Domain.SeatMaster.SeatEntity>;
+    
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="SeatMaster" asp-action="AddSeatInfo">AddSeat</a>
+                    <a class="nav-item nav-link active" asp-controller="SeatMaster" asp-action="ViewSeatInfo">ViewSeat</a>
+                    <a class="nav-item nav-link " asp-controller="SeatMaster" asp-action="DemoSeatDesign">Demo</a>
+                </ul>
+            </div>
+            <div class="card-body">
+                <input type="hidden" value="0" id="hdnPermissionId" />
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"><b>Auditorium</b><span class="text-danger">*</span></label>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <select id="ddlAuditorium" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName",ViewBag.AuditoriumID))">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body ">
+                    @if (ResultData != null && ResultData.ToList().Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table data-toggle="table" id="tblSubMenu" class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="60px" class="align-top text-center">Sl#</th>
+                                        <th width="150px" class="align-top">
+                                            Auditorium
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Row Name
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            Seat Capacity
+                                        </th>
+                                        <th width="150px" class="align-top">
+                                            SeatNos
+                                        </th>
+                                        <th width="150px" class="align-top">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int count = 1;
+                                    }
+                                    @foreach (var list in ResultData)
+                                    {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.AuditoriumName
+                                        </td>
+                                        <td>
+                                            @list.RowDesc
+                                        </td>
+                                        <td>
+                                            @list.SeatCapacity
+                                        </td>
+                                        <td>
+                                            @list.SeatNo
+                                        </td>
+                                        <td>
+                                            <a onclick="updateSubMenu('@list.SeatId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                            <a onclick="deleteSubMenu('@list.SeatId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+                                        </td>
+                                    </tr>
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="norecord"> No Record Found </div>
+                    }
+                    <div class="clearfix col-sm-12"></div>
+                    @*<div class="form-group row">
+                        <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                            <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                        </div>
+                    </div>*@
+                </div>
+                <!--===================================================-->
+            </div>
+        </div>
+</div>
+    </div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+     //Auditorium change event to view all the rows and seats
+    $("#ddlAuditorium").change(function () {
+        location.href = "/SeatMaster/GetSeat?AuditoriumID=" + $("#ddlAuditorium").val();
+    });
+    //Update Department
+    function updateSubMenu(SeatId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/SeatMaster/AddSeatInfo?SeatId=" + SeatId;
+        }
+    }
+
+    //Delete Department
+    function deleteSubMenu(SeatId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/SeatMaster/DeleteSeat?SeatId=" + SeatId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert("Record Deleted Successfully");
+                        window.location.reload();
+                    }
+                    else if (data == "-2") {
+                        alert("Record Already In Use!");
+                        window.location.reload();
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+
+    //Pagination
+    function getDataTable() {
+        $('#tblSubMenu').DataTable({
+            "searching": true,
+            //"bStateSave": true,
+            "dom": 'Bfrtip',
+            "autoWidth": false,
+            "buttons": [
+                //{
+                //    extend: 'print',
+                //    title: 'Manage Block',
+                //    exportOptions: {
+                //        columns: [0, 1, 2, 3, 4]
+                //    },
+                //    customize: function (win) { $(win.document.body).css('font-size', '10pt').prepend('<img src="' + origin + '/images/t5-logo-white.png"  style="position:absolute; top:0; left:0;" />'); $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit'); }
+
+                //}
+                ,
+                {
+                    extend: 'pageLength'
+                }
+            ],
+            "lengthSubMenu": [
+                [10, 25, 50, 100, 1000 - 1],
+                ['10 rows', '25 rows', '50 rows', '100 rows', '1000 rows', 'Show all']
+            ]
+        });
+    }
+</script>
+
+

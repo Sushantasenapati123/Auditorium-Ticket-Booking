@@ -1,0 +1,68 @@
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.deps.json
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\ref\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.pdb
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.AssemblyReference.cache
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfoInputs.cache
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfo.cs
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CoreCompileInputs.cache
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CopyComplete
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\ref\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.deps.json
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\ref\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.pdb
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.AssemblyReference.cache
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfoInputs.cache
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfo.cs
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CoreCompileInputs.cache
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CopyComplete
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\ref\OHSB.Repository.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.deps.json
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.AssemblyReference.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfoInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfo.cs
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CoreCompileInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CopyComplete
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\ref\OHSB.Repository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Repository\obj\Debug\net5.0\refint\OHSB.Repository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.deps.json
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\bin\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\bin\Debug\net5.0\OHSB.IRepository.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.AssemblyReference.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfoInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.AssemblyInfo.cs
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CoreCompileInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.csproj.CopyComplete
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\refint\OHSB.Repository.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\OHSB.Repository.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Repository\obj\Debug\net5.0\ref\OHSB.Repository.dll

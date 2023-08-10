@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewData["Title"] = "BookingTicketPage";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+<style>
+    .spacing {
+        padding: 0 130px;
+    }
+
+    .card {
+        width: 100%;
+        height: 75vh;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        /* gap: 20px;*/
+        gap: 2%;
+        background-color: forestgreen;
+    }
+</style>
+
+
+<div class="container spacing">
+    <div class="card">
+        @{
+            int Count = 1;
+            int rate = 4;
+        }
+
+
+        <div class="k-card k-card-type-rich" style="background-color:aqua">
+            <img src="" id="img" class="k-card-image" width="830" height="450">
+
+            <div class="k-card-body">
+                <h5 class="k-card-title"> <span id="name"></span></h5>
+                <h6 class="k-card-subtitle"><img src="~/Photos/pngegg.png" style="height:20px;width:20px;background-color:aqua" />5.0</h6>
+            </div>
+            <div class="k-card-actions k-card-actions-vertical">
+                @*<span class="k-card-action">
+                    <span class="k-button k-flat k-primary" data-value="View details">View Details</span>
+                </span>
+                <span class="k-card-action">
+                    <span class="k-button k-flat k-primary" data-value="Contact">Contact</span>
+                </span>*@
+            </div>
+        </div>
+       
+        <button onclick="BookingTicketPage()" style="margin-top:15px" value="Book Tickets" class="btn btn-primary">
+            <b>Book Tickets</b>
+        </button>
+       
+
+
+    </div>
+</div>
+<script>
+    function BookingTicketPage() {
+        /* if (confirm("Are you sure to Book?")) {*/
+        location.href = "/Home/BookingTicketPageFor_a_Moview?showid=" + showid;
+        //}
+    }
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddScreenDetails', 'gldata', 'plsubmission', 'AddScreenDetails', '', 'AddScreenDetails');
+        var ScreenMapId = getUrlVars()["ScreenMapId"];
+        if (ScreenMapId != undefined) {
+            //alert(Photo);
+            Edit(ScreenMapId);
+        }
+    });
+    var showid;
+    function Edit(ScreenMapId) {
+
+        $.ajax({
+            url: "/ScreenMap/GetbyShowid?ScreenMapId=" + ScreenMapId,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $("#img").attr('src', '/' + Result.Photo);
+                $('#name').html(Result.ShowName);
+                showid = Result.ShowId;
+                //$('#ddlAuditorium').val(Result.AuditoriumID);
+                //$("#ddlShowtype").val(Result.ShowType);
+                //$("#ddlShow").val(Result.ShowId);
+                //$("#TimeFrom").val(Result.ShowTimeFrom);
+                //$("#TimeTo").val(Result.ShowTimeTo);
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+
+</script>
+

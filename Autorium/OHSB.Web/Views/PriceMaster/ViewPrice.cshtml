@@ -1,0 +1,141 @@
+﻿@model OHSB.Domain.PriceMaster.PriceEntity
+
+@{
+    ViewData["Title"] = "ViewPrice";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<OHSB.Domain.PriceMaster.PriceEntity>;
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="PriceMaster" asp-action="AddPrice">AddPrice</a>
+                    <a class="nav-item nav-link active" asp-controller="PriceMaster" asp-action="ViewPrice">ViewPrice</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS
+                //  ===================================================*@
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblHospital" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Auditorium
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Block
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Row
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Price
+                                    </th>
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                <tr>
+                                    <td class="text-center">@count</td>
+                                    <td>
+                                        @list.AuditoriumName
+                                    </td>
+                                    <td>
+                                        @list.BlockName
+                                    </td>
+                                    <td>
+                                        @list.RowDesc
+                                    </td>
+                                    <td>
+                                        @list.Price
+                                    </td>
+                                    <td>
+                                        @*<a href="/HospitalMaster/AddHospital?HospitalID=@Convert.ToString(list.HospitalID)" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i></a>*@
+                                        <a onclick="updateDepartment('@list.PriceId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                        <a onclick="deleteDoctor('@list.PriceId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+                                    </td>
+                                </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            @*//___________________________________________________________________________*@
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+
+    function updateDepartment(PriceId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/PriceMaster/AddPrice?PriceId=" + PriceId;
+        }
+    }
+
+    function deleteDoctor(PriceId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/PriceMaster/Delete?PriceId=" + PriceId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert(" Deleted Successfully");
+
+                        location.href = "/PriceMaster/ViewPrice";
+
+                    }
+                    else if (data == "4") {
+                        alert(" Already In Use!");
+
+                        location.href = "/PriceMaster/ViewPrice";
+
+
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+</script>

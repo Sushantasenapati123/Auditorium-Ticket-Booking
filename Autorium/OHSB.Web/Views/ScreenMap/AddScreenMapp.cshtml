@@ -1,0 +1,228 @@
+﻿@model OHSB.Domain.ScreenMap.ScreenMapEntity
+@{
+    ViewData["Title"] = "AddScreenMapp";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="ScreenMap" asp-action="AddScreenMapp">AddScreenMap</a>
+                    <a class="nav-item nav-link " asp-controller="ScreenMap" asp-action="ViewScreenMapp">ViewScreenMap</a>
+
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS BlockMaster/AddBlock
+                //  ===================================================*@
+
+        <div class="card-body">
+            <div class="form-group col-md-4">
+                <input id="hdnScreenMapId" class="form-control" hidden />
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Auditorium <span class="text-danger">*</span></label>
+                <div class="col-6 col-md-6 col-xl-4">
+                    <select id="ddlAuditorium" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                        <option value="0">--Select--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">ShowName <span class="text-danger">*</span></label>
+                <div class="col-6 col-md-6 col-xl-4">
+                    <select id="ddlShow" onchange="GetShowTimeBySlotId()" class="form-control" asp-items="@(new SelectList(ViewBag.ShowId,"ShowId","ShowName"))" asp-for="ShowId">
+                        <option value="0">--Select--</option>
+                    </select>
+                </div>
+            </div>
+           
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">ShowType <span class="text-danger">*</span></label>
+                <div class="col-6 col-md-6 col-xl-4">
+                    @*<select id="ddlShowtype" onchange="GetShowTimeBySlotId()" class="form-control" asp-items="@(new SelectList(ViewBag.id,"id","ShowType"))" asp-for="id">
+                    <option value="0">--Select--</option>
+                </select>*@
+                    <input type="text" id="ddlShowtype" readonly class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Show Time from <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-3 col-xl-2">
+                    <input type="time" id="TimeFrom" readonly class="form-control">
+                </div>
+                <label class="">To <span class="text-danger">*</span></label>
+                <div class="col-12 col-md-3 col-xl-2">
+                    <input type="time" id="TimeTo" readonly class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                    <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                    <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddScreenDetails', 'gldata', 'plsubmission', 'AddScreenDetails', '', 'AddScreenDetails');
+        var ScreenMapId = getUrlVars()["ScreenMapId"];
+        if (ScreenMapId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(ScreenMapId)
+        }
+        $(function () {
+            $('.datepicker').datepicker({
+                // format: 'dd-mm-yyyy',
+
+                autoclose: true
+            });
+        });
+
+    });
+
+</script>
+<script type="text/javascript">
+    $("#btnSubmit").click(function () {
+        var doc = {
+            ScreenMapId: $("#hdnScreenMapId").val(),
+            AuditoriumID: $("#ddlAuditorium").val(),
+            ShowType: $("#ddlShowtype").val(),
+            ShowId: $("#ddlShow").val(),
+            ShowTimeFrom: $("#TimeFrom").val(),
+            ShowTimeTo: $("#TimeTo").val(),
+        
+
+
+        };
+
+         if (validate()) {
+
+             if (confirm("Are you sure you want to Submit ?")) {
+            
+            $.ajax({
+                url: "/ScreenMap/AddScreenMapp",
+                data: doc,
+                type: "POST",
+                success: function (result) {
+                    if (getUrlVars()["ScreenMapId"] != undefined) {
+                        alert(result)
+                        location.href = "/ScreenMap/ViewScreenMapp";
+                    }
+                    else
+                        alert(result);
+                    location.href = "/ScreenMap/ViewScreenMapp";
+                    reset();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+         }
+        //}
+
+    });
+    //UPDATE
+    function Edit(ScreenMapId) {
+
+        $.ajax({
+            url: "/ScreenMap/Getbyid?ScreenMapId=" + ScreenMapId,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnScreenMapId').val(Result.ScreenMapId);
+                $('#ddlAuditorium').val(Result.AuditoriumID);
+                $("#ddlShowtype").val(Result.ShowType);
+                $("#ddlShow").val(Result.ShowId);
+                $("#TimeFrom").val(Result.ShowTimeFrom);
+                $("#TimeTo").val(Result.ShowTimeTo);
+
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    //Get Show time by show id
+    function GetShowTimeBySlotId() {
+        $.ajax({
+            url: "/ScreenMap/GetbyShowtimeid?ShowId=" + $('#ddlShow').val(),
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                $("#ddlShowtype").val(data.ShowType);
+                $("#TimeFrom").val(data.ShowTimeFrom);
+                $("#TimeTo").val(data.ShowTimeTo);
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+    function validate() {
+
+        if ($('#ddlAuditorium').val() == "0") {
+            alert("Please Select Auditorium Name !");
+            return false;
+            $('#ddlAuditorium').focus();
+        }
+        else if ($('#ddlShow').val() == "0") {
+            alert("Please Select Show Name !");
+            $('#ddlShow').focus();
+            return false;
+        } else if ($('#Photo').val() == "") {
+            alert("Please Select Photo !");
+            $('#Photo').focus();
+            return false;
+        }
+        else if ($('#ddlShowtype').val() == "0") {
+            alert("Please Select Showtype Name !");
+            return false;
+            $('#ddlShowtype').focus();
+        }
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+    $("#btnCancel").click(function () {
+        if ($("#hdnScreenMapId").val() != '') {
+            window.location.href = "/ScreenMap/ViewScreenMapp";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#ddlAuditorium').val("0");
+        $("#ddlShow").val("0");
+        $("#ddlShowtype").val(" ");
+        $("#TimeFrom").val(" ");
+        $("#TimeTo").val(" ");
+    }
+</script>

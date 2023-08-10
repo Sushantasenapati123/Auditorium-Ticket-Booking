@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewData["Title"] = "AddRow";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="RowMaster" asp-action="AddRow">AddRow</a>
+                    <a class="nav-item nav-link " asp-controller="RowMaster" asp-action="ViewRow">ViewRow</a>
+                    @*<a class="nav-item nav-link " asp-controller="RowMaster" asp-action="AddSeat">AddSeat</a>
+                        <a class="nav-item nav-link " asp-controller="RowMaster" asp-action="ViewSeatDeatils">SeatDetails</a>*@
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS
+                //  ===================================================*@
+
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <label class="control-label" for="Row_Name">Row<span class="text-danger">*</span></label>
+                        <input id="txtrowname" class="form-control" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <label class="control-label" for="RowDesc">RowDescription<span class="text-danger">*</span></label>
+                        <input id="txtrowdesc" class="form-control" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <input id="hdnRowNo" class="form-control" hidden />
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/validation/validation.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddRow', 'gldata', 'plsubmission', 'AddRow', '', 'AddRow');
+        var Row_No = getUrlVars()["Row_No"];
+        if (Row_No != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(Row_No)
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnSubmit").click(function () {
+        var doc = {
+            Row_No: $("#hdnRowNo").val(),
+            Row_Name: $("#txtrowname").val(),
+            RowDesc: $("#txtrowdesc").val()
+
+        };
+
+        if (validate()) {
+
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/RowMaster/AddRow",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["Row_No"] != undefined) {
+                            alert(result)
+                            location.href = "/RowMaster/ViewRow";
+                        }
+                        else
+                            alert(result);
+                        location.href = "/RowMaster/ViewRow";
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+
+        }
+
+    });
+
+
+
+    $("#btnCancel").click(function () {
+        if ($("#hdnRowNo").val() != '') {
+            window.location.href = "/RowMaster/ViewRow";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#hdnRowNo').val("");
+        $('#txtrowname').val("");
+        $('#txtrowdesc').val("");
+
+
+    }
+
+    //UPDATE
+    function Edit(Row_No) {
+        $.ajax({
+            url: "/RowMaster/Getbyid?Row_No=" + Row_No,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnRowNo').val(Result.Row_No);
+                $('#txtrowname').val(Result.Row_Name);
+                $('#txtrowdesc').val(Result.RowDesc);
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    //validation
+    function validate() {
+        if ($('#txtrowname').val() == "") {
+            alert("Please Enter Row Name!");
+            $('#txtrowname').focus();
+            return false;
+        }
+        else if ($('#txtrowdesc').val() == "") {
+            alert("Please Enter Row Desc!");
+            $('#txtrowdesc').focus();
+            return false;
+        }
+        else
+            return true;
+    }
+
+
+</script>
+
+

@@ -1,0 +1,276 @@
+﻿@model OHSB.Domain.Show_Master.Show_Entity
+@{
+    ViewData["Title"] = "AddShows";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Show_Master" asp-action="AddShows">AddShow</a>
+                    <a class="nav-item nav-link " asp-controller="Show_Master" asp-action="ViewShows">ViewShow</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS 1 -->
+            <!--===================================================-->
+            <div class="card-body">
+                <div class="form-group col-md-4">
+                    <input id="hdnShowId" class="form-control" hidden />
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Show Name <span class="text-danger">*</span></label>
+                    <div class="col-6 col-md-6 col-xl-4">
+                        <input type="text" id="txtShow" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Choose Cover Photo <span class="text-danger">*</span></label>
+                    <div class="col-6 col-md-6 col-xl-4">
+
+                        <input type="file" id="photo" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Show Type<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddlshowtype" class="form-control" asp-items="@(new SelectList(ViewBag.id,"id","ShowType"))" asp-for="id">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="@*col-12 col-md-2 col-xl-2*@ control-label" for="demo-email-input">Show Time from <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-2">
+                        <input type="time" id="TimeFrom" class="form-control">
+                        <span id="lblErrorPassward" style="color: black">Base on 24 Hour Format</span>
+                    </div>
+                    <label class="">To <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-2">
+                        <input type="time" id="TimeTo" class="form-control">
+                        <span id="lblErrorPassward" style="color:black">Base on 24 Hour Format</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Date <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <input type="text" id="txtShowDate" placeholder="dd/mm/yy" class="form-control datepicker">
+                        @*<input type="date" name="date" id="txtShowDate" class="form-control">*@
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+                <!--==============================================================================================================================================-->
+                <!-- BASIC FORM ELEMENTS 2 -->
+                <!--===================================================-->
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="http://localhost/acrilart/javascript/jquery-1.6.4.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddShowDetails', 'gldata', 'plsubmission', 'AddShowDetails', '', 'AddShowDetails');
+        var ShowId = getUrlVars()["ShowId"];
+        if (ShowId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(ShowId)
+        }
+        $(function () {
+            $('.datepicker').datepicker({
+                // format: 'dd-mm-yyyy',
+
+                autoclose: true
+            });
+        });
+
+    });
+
+</script>
+<script type="text/javascript">
+    //date picker
+    //$(document).ready(function () {
+
+    //});
+
+
+    $("#btnSubmit").click(function () {
+        var doc = {
+            ShowId: $("#hdnShowId").val(),
+            ShowName: $("#txtShow").val(),
+            id: $("#ddlshowtype").val(),
+            ShowTimeFrom: $("#TimeFrom").val(),
+            ShowTimeTo: $("#TimeTo").val(),
+            ShowDate: $("#txtShowDate").val(),
+            Photo: $("#photo").val(),
+        };
+
+        if (validate()) {
+              var files = $('#photo').prop("files");
+                        formData = new FormData();
+                        formData.append("MyUploader", files[0]);
+                        $.ajax({
+                            data: formData,
+                            url: '@Url.Action("UploadImage", "ScreenMap")',
+                            type: 'POST',
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType:"json",
+
+                            success: function (data) {
+                                if (data.status == "success") {
+
+                                }
+                            },
+                            error: function () {
+                                alert("Error occurs");
+                            }
+
+                        });
+            //    && NamevalidationC('txtName', 'lblErrorName') == true
+            //    && Pricevalidate('price', 'lblerrorprice') == true) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/Show_Master/AddShows",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["ShowId"] != undefined) {
+                            alert(result)
+                            location.href = "/Show_Master/ViewShows";
+                        }
+                        else
+                            alert(result);
+                        location.href = "/Show_Master/ViewShows";
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+        //}
+
+    });
+
+
+
+    $("#btnCancel").click(function () {
+        if ($("#hdnShowId").val() != '') {
+            window.location.href = "/Show_Master/ViewShows";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#hdnShowId').val("");
+        $('#ddlshowtype').val("0");
+        $("#txtShow").val("");
+        $("#TimeFrom").val("");
+        $("#TimeTo").val("");
+        $("#txtShowDate").val("");
+    }
+
+    //UPDATE
+    function Edit(ShowId) {
+        $.ajax({
+            url: "/Show_Master/Getbyid?ShowId=" + ShowId,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnShowId').val(Result.ShowId);
+                $('#txtShow').val(Result.ShowName);
+                $("#ddlshowtype").val(Result.id);
+                $("#TimeFrom").val(Result.ShowTimeFrom);
+                $("#TimeTo").val(Result.ShowTimeTo);
+                $("#txtShowDate").val(Result.ShowDate);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    function validate() {
+        var currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
+        var selectedDate = new Date(Date.parse($('#txtShowDate').val()));
+        if ($('#txtShowDate').val() == "0") {
+            alert("Please Enter Date  !");
+            return false;
+            $('#txtShowDate').focus();
+        }
+        //else if (selectedDate < currentDate) {
+        //    alert("Please Enter Date Greater Then Current Date  !");
+        //    return false;
+        //    $('#txtShowDate').focus();
+        //}
+        else if ($('#txtShow').val() == "") {
+            alert("Enter Show Name !");
+            return false;
+            $('#txtShow').focus();
+        }
+
+        else if ($('#photo').val() == "") {
+            alert("Please select Cover Photo !");
+            return false;
+            $('#photo').focus();
+        }
+        else if ($('#ddlshowtype').val() == "0") {
+            alert("Please Select Show type !");
+            return false;
+            $('#ddlshowtype').focus();
+        }
+        else if ($('#TimeFrom').val() == "") {
+            alert("Please Select Show Time From !");
+            return false;
+            $('#TimeFrom').focus();
+        }
+        else if ($('#TimeTo').val() == "") {
+            alert("Please Select Show Time To !");
+            return false;
+            $('#TimeTo').focus();
+        }
+        else if ($('#txtShowDate').val() == "") {
+            alert("Please Select Show Date !");
+            return false;
+            $('#txtShowDate').focus();
+        }
+
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+
+</script>
+
+

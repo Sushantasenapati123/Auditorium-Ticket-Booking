@@ -1,0 +1,222 @@
+﻿@model OHSB.Domain.SeatMaster.SeatEntity
+@{
+    ViewData["Title"] = "DemoSeatDesign";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+<style>
+    .container {
+        perspective: 1000px;
+        margin-bottom: 30px;
+    }
+
+    .screen {
+        background-color: #007bff;
+        height: 28px;
+        width: 40%;
+        margin-left: 322px;
+        transform: rotatey(1deg);
+        box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+    }
+
+
+    /* The container */
+    .containerr {
+        display: inline;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 16px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+    .containerr input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: #8080806b;
+    }
+
+    /* On mouse-over, add a grey background color */
+  /*  .containerr:hover input ~ .checkmark {
+        background-color: red;
+    }*/
+
+    /* When the checkbox is checked, add a blue background */
+    .containerr input:checked ~ .checkmark {
+        background-color: #13be62;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .containerr input:checked ~ .checkmark:after {
+    }
+
+    /* Style the checkmark/indicator */
+    .containerr .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+</style>
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="SeatMaster" asp-action="AddSeatInfo">AddSeat</a>
+                    <a class="nav-item nav-link" asp-controller="SeatMaster" asp-action="ViewSeatInfo">ViewSeat</a>
+                    <a class="nav-item nav-link active" asp-controller="SeatMaster" asp-action="DemoSeatDesign">Booking Seat</a>
+
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS BlockMaster/AddBlock
+                //  ===================================================*@
+            <div class="card-body">
+                <div class="form-group row" style="margin-left:315px">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"><b>Auditorium</b><span class="text-danger">*</span></label>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <select id="ddlAuditorium" onchange="GetRowByAId()" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                @*<div class="form-group row">
+                        <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"> Day<span class="text-danger">*</span></label>
+                        <div class="col-12 col-md-6 col-xl-4" id="Day">
+
+
+
+                        </div>
+                    </div>*@
+                <div class="container">
+                    <ul id="wkslist"></ul>
+                    <div class="screen"><center><h5>Screen</h5></center></div>
+                    <div id="checkboxlist" style="margin-left:320px">
+
+                    </div>
+                </div>
+
+                <div id="checkboxlist">
+                    @*<input type="checkbox" id="Tuesday" class="form-control" value="2">*@
+                    @*<label for="Tuesday"> Tuesday</label>*@
+                </div>
+            </div>
+
+
+            @* ++++++++++++++++++++++++++++++++ *@
+            @*<div class="container">
+                    <div class="screen"><center><h5>Screen</h5></center></div>
+
+
+                </div>*@
+
+
+
+            @*<div class="text-left mt-2">
+                    <button class="btn btn-primary btn-xs mb-2">Available</button>
+                    <button class="btn btn-success btn-xs mb-2">Choosen</button>
+                    <button class="btn btn-danger btn-xs mb-2">Booked</button>
+                </div>*@
+            @*//  ===================================================**@
+        </div>
+    </div>
+</div>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function GetRowByAId() {
+        $.ajax({
+            url: "/SeatMaster/SeatNosGetByAuditoriumId?AuditoriumID=" + $('#ddlAuditorium').val(),
+
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var count = 1;
+                var v = '';
+                $.each(data, function (i, item) {
+                    count++;
+                    /* v += '<input type="checkbox" class="seats" name="ck" id="' + (i + 1) + '" value=' + item.SeatNos + ' />' + '<label  for=' + (i + 1) + '>' + item.SeatNos + '</label>';*/
+                    v += '<label class="containerr"for=' + (i + 1) + '>' + item.SeatNos +
+                        '<input type="checkbox" class="seats" name="ck" id="' + (i + 1) + '" value=' + item.SeatNos + ' />'+
+                            '<span class="checkmark"></span>'
+                             '</label >'
+                    if (count % 10 == 0) { v += '<br/>' }
+
+                });
+                $("#checkboxlist").html(v);
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+
+    }
+
+    //// sample of response from server
+    //var response = { optionA: 'One', optionB: 'Two', optionC: 'Three' };
+
+    //// this would go in your ajax success handler
+    //$.each(response, function (key, value) {
+    //    var li = $('<li><input type="checkbox" name="' + key + '" id="' + key + '"/>' +
+    //        '<label for="' + key + '"></label></li>');
+    //    li.find('label').text(value);
+    //    $('#wkslist').append(li);
+    //});
+</script>
+
+
+@*$(":checkbox").click(function () {
+        if ($("input:checked").length == ($("#Numseats").val())) {
+            $(":checkbox").prop('disabled', true);
+            $(':checked').prop('disabled', false);
+        }
+        else {
+            $(":checkbox").prop('disabled', false);
+        }
+    });*@
+
+

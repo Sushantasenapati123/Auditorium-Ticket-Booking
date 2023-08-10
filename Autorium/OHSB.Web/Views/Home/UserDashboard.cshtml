@@ -1,0 +1,72 @@
+﻿@model OHSB.Domain.ScreenMap.ScreenMapEntity
+@{
+    ViewData["Title"] = "ViewScreenMapp";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<OHSB.Domain.ScreenMap.ScreenMapEntity>;
+}
+<html>
+<h1></h1>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Movie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .spacing {
+            padding: 0 130px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            /* gap: 20px;*/
+            gap: 2%;
+            background-color: forestgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="container spacing">
+        <div class="card">
+            @{
+                int Count = 1;
+                int rate = 4;
+            }
+            @foreach (var list in ResultData)
+            {
+
+                <div class="k-card k-card-type-rich" style="background-color:aqua">
+                    <a onclick="BookingTicketPage('@list.ShowId');">  <img src="/@list.Photo" class="k-card-image" width="230" height="150"></a>
+                  
+                    <div class="k-card-body">
+                        <h5 class="k-card-title"> @list.ShowName</h5>
+                        <h6 class="k-card-subtitle"><img src="~/Photos/pngegg.png" style="height:20px;width:20px;background-color:aqua" />@rate</h6>
+                    </div>
+                    <div class="k-card-actions k-card-actions-vertical">
+                            @*<span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details">View Details</span>
+                            </span>
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="Contact">Contact</span>
+                            </span>*@
+                    </div>
+                </div>
+                Count++;
+                rate++;
+            }
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    function BookingTicketPage(ScreenMapId) {
+       /* if (confirm("Are you sure to Book?")) {*/
+            location.href = "/Home/BookingTicketPage?ScreenMapId=" + ScreenMapId;
+        //}
+    }
+</script>

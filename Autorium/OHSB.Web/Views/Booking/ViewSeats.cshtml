@@ -1,0 +1,357 @@
+﻿@model Auditorium.Domain.BookingMaster.BookingMaster
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "AddShowSelect";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var userId = ViewContext.HttpContext.Session.GetString("UserId");
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="Booking" asp-action="ViewSeats">View Seats</a>
+                    <a class="nav-item nav-link" asp-controller="Booking" asp-action="ViewBooking">View Booking</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="form-group col-md-4">
+                    <input id="Id" class="form-control" hidden />
+                </div>
+                <div>
+                    <input type="hidden" id="userId" value="@ViewContext.HttpContext.Session.GetString("UserId")" />
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="BookingDate">Date Of Booking<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input id="BookingDate" class="form-control" type="date" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Auditorium Name<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <select id="AuditoriumId" class="form-control auditorium" onchange="populateSeats()" asp-items="@(new SelectList(ViewBag.AudiList,"AuditoriumId","AuditoriumName"))" asp-for="AuditoriumId">
+                            <option value="Select">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" id="seatRows">
+                    <!-- Add row elements dynamically using JavaScript -->
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/validation/validation.js"></script>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddSeat', 'gldata', 'plsubmission', 'AddSeat', '', 'AddSeat');
+        //var Id = getUrlVars()["Id"];
+        //if (Id != undefined) {
+        //    $("#btnSubmit").html("Update");
+        //    $("#btnCancel").html("Cancel");
+        //    Edit(Id)
+        //}
+    });
+
+
+    function populateSeats() {
+        var auditoriumId = $("#AuditoriumId").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Booking/GetSeats",
+            data: { AuditoriumId: auditoriumId },
+            success: function (result) {
+                var seats = JSON.parse(result);
+
+                // Create a dictionary to store blocks, rows, and seats
+                var blocks = {};
+
+                // Group seats by block and row
+                for (var i = 0; i < seats.length; i++) {
+                    var seat = seats[i];
+                    if (!blocks[seat.BlockId]) {
+                        blocks[seat.BlockId] = {
+                            BlockId: seat.BlockId,
+                            BlockName: seat.BlockName,
+                            Rows: {}
+                        };
+                    }
+                    var blockRows = blocks[seat.BlockId].Rows;
+                    if (!blockRows[seat.RowId]) {
+                        blockRows[seat.RowId] = {
+                            RowId: seat.RowId,
+                            RowName: seat.RowName,
+                            Seats: []
+                        };
+                    }
+                    blockRows[seat.RowId].Seats.push(seat);
+                }
+
+                // Clear previous seat data
+                $("#seatRows").empty();
+
+                // Generate HTML for blocks in columns
+                var blockContainerHtml = "<div class='block-container'>";
+                var blockColumnsHtml = "";
+
+                // Generate HTML for each block and its rows and seats
+                for (var blockId in blocks) {
+                    var block = blocks[blockId];
+                    blockColumnsHtml += "<div class='block-column'>";
+                    blockColumnsHtml += "<div class='block-header'><strong class='block-name' style='display: inline-block; text-align: center; width: 100%;' data-block-id='" + block.BlockId + "'>" + block.BlockName + "</strong></div>";
+
+                    // Generate HTML for each row in the block
+                    for (var rowId in block.Rows) {
+                        var row = block.Rows[rowId];
+                        blockColumnsHtml += "<div class='row-seats'>";
+                        blockColumnsHtml += "<strong>Row " + row.RowName + "</strong>: ";
+
+                        // Generate HTML for seats in the row
+                        var seatRowHtml = "";
+                        for (var j = 0; j < row.Seats.length; j++) {
+                            var seat = row.Seats[j];
+                            var seatId = "seat_" + seat.RowId + "_" + seat.SeatId;
+                            var seatName = seat.SeatName;
+                            var seatClass = "seat";
+                            var seatStyle = "";
+
+                            seatRowHtml += "<div class='seat-container' style='display: inline-block; margin-right: 20px;'>";
+                            seatRowHtml += "<span id='" + seatId + "' class='" + seatClass + "' onclick='selectSeat(this)' style='" + seatStyle + "'>";
+                            seatRowHtml += "<img src='/Photos/chair-icon.png' style='width: 20px; height: 20px;' />";
+                            seatRowHtml += "<span class='seat-name' style='display: block; text-align: center;'>" + seatName + "</span>";
+                            seatRowHtml += "</span>";
+                            seatRowHtml += "</div>";
+                        }
+                        blockColumnsHtml += seatRowHtml;
+                        blockColumnsHtml += "</div>";
+                    }
+                    blockColumnsHtml += "</div>";
+                }
+                blockContainerHtml += blockColumnsHtml + "</div>";
+                $("#seatRows").append(blockContainerHtml);
+
+            }
+
+        });
+
+        setTimeout(function () {
+            var seats = document.getElementsByClassName('seat');
+
+            if (seats.length === 0) {
+                console.log("No elements found with the class 'seat'.");
+                return;
+            }
+
+            // Function to update booked seats
+            function updateBookedSeats(bookingDate) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Booking/GetBookedSeatsForAuditorium",
+                    data: { AuditoriumId: auditoriumId, BookingDate: bookingDate },
+                    success: function (result) {
+                        var bookedSeats = result;
+
+                        $(".seat").each(function () {
+                            var seat = $(this);
+                            var seatId = seat.attr("id").split("_")[2];
+                            var blockId = seat.closest(".block-column").find(".block-name").data("block-id");
+                            var isBooked = bookedSeats.some(function (bookedSeat) {
+                                return (
+                                    bookedSeat.seatId == seatId &&
+                                    bookedSeat.blockId == blockId
+                                );
+                            });
+
+                            if (isBooked) {
+                                seat.addClass("booked-seat");
+                            } else {
+                                seat.removeClass("booked-seat");
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Event handler for BookingDate change
+            $("#BookingDate").change(function () {
+                var bookingDate = $(this).val();
+                updateBookedSeats(bookingDate);
+            });
+
+            // Initial update of booked seats
+            var initialBookingDate = $("#BookingDate").val();
+            updateBookedSeats(initialBookingDate);
+        }, 500);
+
+    }
+
+    var seatDetails = "";
+
+    function selectSeat(seat) {
+        var seatId = seat.id;
+        var isSelected = $(seat).hasClass("selected-seat");
+
+        if (isSelected) {
+            // Seat is already selected, unselect it
+            $(seat).removeClass("selected-seat");
+            $(seat).css("background-color", "#eaeaea");
+
+            // Remove the seat details from the array
+            seatDetails = seatDetails.filter(function (seat) {
+                return seat.SeatId !== seatId;
+            });
+        }
+        else {
+            // Seat is not selected, select it
+            $(seat).addClass("selected-seat");
+            $(seat).css("background-color", "#13f702"); // Change the seat color to indicate selection
+            // Find the blockId by traversing up the DOM hierarchy
+            var blockId = $(seat).closest(".block-column").find(".block-name").data("block-id");
+            // Get the actual values of AuditoriumId, RowId, and SeatId
+            var id = $("#Id").val();
+            var bookingDate = $("#BookingDate").val();
+            var userId = $("#userId").val();
+            var auditoriumId = $("#AuditoriumId").val();
+
+            var rowIds = [];
+            var seatIds = [];
+
+            // Loop over the selected seats and push each seat ID to the seatIds array
+            $(".selected-seat").each(function () {
+                var seatId = $(this).attr("id").split("_")[2];
+                var rowId = $(this).attr("id").split("_")[1];
+
+                // Push the rowId if it's not already in the rowIds array
+                if (rowIds.indexOf(rowId) === -1) {
+                    rowIds.push(rowId);
+                }
+
+                seatIds.push(seatId);
+            });
+
+            // Update the seatDetails object with the new values
+            seatDetails = {
+                Id: id,
+                BookingDate: bookingDate,
+                UserId: userId,
+                AuditoriumId: auditoriumId,
+                BlockId: blockId,
+                RowId: rowIds,
+                SeatId: seatIds
+            };
+        }
+    }
+
+
+    $("#btnSubmit").click(function () {
+        // Validate Booking Date
+        var bookingDate = $("#BookingDate").val();
+        if (bookingDate === "") {
+            alert("Please select a Booking Date.");
+            return;
+        }
+
+        // Validate Auditorium
+        var auditoriumId = $("#AuditoriumId").val();
+        if (auditoriumId === 'Select') {
+            alert("Please select an Auditorium.");
+            return;
+        }
+
+        // Make the AJAX request to submit the selected seats
+        if (confirm("Are you sure you want to Submit?")) {
+            $.ajax({
+                type: "POST",
+                url: "/Booking/ViewSeats",
+                data: seatDetails,
+                success: function (result) {
+                    if (getUrlVars()["Id"] !== undefined) {
+                        alert(result);
+                        location.href = "/Booking/ViewBooking";
+                    } else {
+                        alert(result);
+                        location.href = "/Booking/ViewBooking";
+                    }
+                    reset();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    });
+
+
+    $("#btnCancel").click(function () {
+        if ($("#Id").val() != '') {
+            window.location.href = "/Booking/ViewBooking";
+        } else {
+            reset();
+        }
+    });
+
+    function reset() {
+        $("#AuditoriumId").val("Select");
+        $(".selected-seat").removeClass("selected-seat").css("background-color", "#eaeaea");
+        seatDetails = [];
+    }
+
+
+    //UPDATE
+    //function Edit(Id) {
+    //    $.ajax({
+    //        url: "/Booking/Getbyid?Id=" + Id,
+    //        type: "GET",
+    //        contentType: "application/json;charset=UTF-8",
+    //        dataType: "json",
+    //        success: function (Result) {
+    //            $('#Id').val(Result.Id);
+    //            $("#AuditoriumId").val(Result.AuditoriumId);
+    //            $("#RowId").val(Result.RowId);
+    //            $("#SeatId").val(Result.SeatId);
+    //        },
+    //        error: function (errormessage) {
+    //            alert(errormessage.responseText);
+    //        }
+    //    });
+    //    return false;
+    //}
+</script>
+<style>
+    .booked-seat {
+        background-color: red; /* Change the background color to your desired color */
+        opacity: 0.5; /* Set the opacity to 50% */
+    }
+</style>

@@ -1,0 +1,136 @@
+﻿@model OHSB.Domain.BlockRowMapping.BlockRowEntity
+@{
+    ViewData["Title"] = "ViewSlotMapping";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<OHSB.Domain.BlockRowMapping.BlockRowEntity>;
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link " asp-controller="BlockRowMapping" asp-action="AddBlockMap">AddBlockRowMap</a>
+                    <a class="nav-item nav-link active " asp-controller="BlockRowMapping" asp-action="ViewSlotMapping">ViewBlockRowMap</a>                 
+                </ul>
+            </div>
+            <!-- Search Panel-->
+            @*<div class="search-container">
+                <div class="search-sec" style="display: block;">
+                    <form method="post" id="indsearch">
+                        <div class="form-group form-row">
+                        </div>
+                    </form>
+                </div>
+                <div class="text-center"> <a class="searchopen" title="Search" data-toggle="tooltip" data-placement="bottom"> <i class="icon-angle-arrow-down"></i> </a></div>
+            </div>*@
+            <!-- Search Panel -->
+            <!--===================================================-->
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="tblSlotMapping" class="table">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">
+                                        Auditorium Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                       Block Name
+                                    </th>
+                                    <th width="150px" class="align-top">
+                                        Rows Name
+                                    </th>
+                                   
+                                    <th width="150px" class="align-top">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var list in ResultData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>
+                                            @list.AuditoriumName
+                                        </td>
+                                        <td>
+                                            @list.BlockName
+                                        </td>
+                                        <td>
+                                            @list.RowDesc
+                                        </td>
+                                        <td>
+                                            <a onclick="updateSlotMapping('@list.AuditoriumID','@list.BlockId');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />
+                                            <a onclick="deleteSlotMapping('@list.AuditoriumID','@list.BlockId');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+                <div class="clearfix col-sm-12"></div>
+            </div>
+            <!--===================================================-->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getDataTable();
+    })
+
+    //Update SlotMapping
+    function updateSlotMapping(AuditoriumID, BlockId) {
+        if (confirm("Are you sure you want to update ?")) {
+            location.href = "/BlockRowMapping/AddBlockMap?AuditoriumID=" + AuditoriumID  + "&BlockId=" + BlockId;
+            
+        }
+    }
+    function deleteSlotMapping(AuditoriumID, BlockId) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/BlockRowMapping/DeleteBlockMapping?AuditoriumID=" + AuditoriumID + "&BlockId=" + BlockId,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert("Record Deleted Successfully");
+                        window.location.reload();
+                    }
+                    else if (data == "4") {
+                        alert("Record Already In Use!");
+                        window.location.reload();
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+
+    </script>

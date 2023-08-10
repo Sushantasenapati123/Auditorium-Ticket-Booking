@@ -1,0 +1,164 @@
+﻿@model OHSB.Domain.SlotMaster.SlottimeEntity
+@{
+    ViewData["Title"] = "AddSlot";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="SlotMaster" asp-action="AddSlot">AddSlot</a>
+                    <a class="nav-item nav-link" asp-controller="SlotMaster" asp-action="ViewSlot">ViewSlot</a>
+
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <!--Static-->
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Auditorium Name<span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <select id="ddltype" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                           <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Slot Name <span class="text-danger">*</span></label>
+                    <div class="col-6 col-md-6 col-xl-4">
+                        <input type="text" id="txtSlot" class="form-control">
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="@*col-12 col-md-2 col-xl-2*@ control-label" for="demo-email-input">Slot Time from <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-2">
+                        <input type="time" id="TimeFrom" class="form-control">
+                        <span id="lblErrorPassward" style="color: black">Base on 24 Hour Format</span>
+                    </div>
+                    <label class="">To <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-6 col-xl-2">
+                        <input type="time" id="TimeTo" class="form-control">
+                        <span id="lblErrorPassward" style="color:black">Base on 24 Hour Format</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <input id="SlotID" class="form-control" hidden />
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                <div class="col-12 col-md-6 col-xl-4">
+                    <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                    <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/validation/validation.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddSlotMaster', 'gldata', 'plsubmission', 'AddSlotMaster', '', 'AddSlotMaster');
+        var SlotID = getUrlVars()["SlotID"];
+        if (SlotID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(SlotID)
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnSubmit").click(function () {
+        var doc = {
+            SlotID: $("#SlotID").val(),
+            AuditoriumID: $("#ddltype").val(),
+            SlotName: $("#txtSlot").val(),
+            Slot_TimeFrom: $("#TimeFrom").val(),
+            Slot_TimeTo: $("#TimeTo").val()
+        };      
+        if (confirm("Are you sure you want to Submit ?")) {
+            $.ajax({
+                url: "/SlotMaster/AddSlot",
+                data: doc,
+                type: "POST",
+                success: function (result) {
+                    if (getUrlVars()["SlotID"] != undefined) {
+                        alert(result)
+                        location.href = "/SlotMaster/ViewSlot";
+                    }
+                    else
+                        alert(result);
+                    location.href = "/SlotMaster/ViewSlot";
+                    reset();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }      
+
+    });
+    $("#btnCancel").click(function () {
+        if ($("#SlotID").val() != '') {
+            window.location.href = "/SlotMaster/ViewSlot";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#SlotID').val("");
+        $('#ddltype').val("0");
+        $("#txtSlot").val("");
+        $("#TimeFrom").val("");
+        $("#TimeTo").val("");
+
+
+    }
+
+    //UPDATE
+    function Edit(SlotID) {
+        $.ajax({
+            url: "/SlotMaster/Getbyid?SlotID=" + SlotID,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#SlotID').val(Result.SlotID);
+                $('#ddltype').val(Result.AuditoriumID);
+                $("#txtSlot").val(Result.SlotName);
+                $('#TimeFrom').val(Result.Slot_TimeFrom);
+                $('#TimeTo').val(Result.Slot_TimeTo);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+</script>
+
+
+
+

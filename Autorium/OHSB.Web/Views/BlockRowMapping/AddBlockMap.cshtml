@@ -1,0 +1,257 @@
+﻿@model OHSB.Domain.BlockRowMapping.BlockRowEntity
+@{
+    ViewData["Title"] = "AddBlockMap";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    // var ResultSubMenu = ViewBag.Row_No as List<OHSB.Domain.BlockRowMapping.BlockRowEntity>;
+
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="BlockRowMapping" asp-action="AddBlockMap">AddBlockRowMap</a>
+                    <a class="nav-item nav-link " asp-controller="BlockRowMapping" asp-action="ViewSlotMapping">ViewBlockRowMap</a>
+
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS BlockMaster/AddBlock
+                //  ===================================================*@
+
+            <div class="card-body">
+                <div class="form-group row">
+                    <input type="hidden" value="0" id="hdntypeId" />
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <label class="control-label">Auditorium<span class="text-danger">*</span></label>
+                        <select id="ddlAuditorium" class="form-control" onchange="GetBlockByAId()" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <label class="control-label">Block<span class="text-danger">*</span></label>
+                        <select id="ddlBlock" class="form-control" onchange="GetRowByAId()">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="checkboxlist">
+
+                </div>
+
+                <div class="form-group col-md-4">
+                    <input id="hdnBlockRowID" class="form-control" hidden />
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        loadNavigation('Add BlockRowMapping', 'gldata', 'plsubmission', 'Add BlockRowMapping', '', 'Add BlockRowMapping');
+        GetBlockByAId();
+        var AuditoriumID = getUrlVars()["AuditoriumID"];
+        var BlockId = getUrlVars()["BlockId"];
+        if (AuditoriumID != undefined && BlockId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(AuditoriumID, BlockId);
+            GetRowByAIdEdit(AuditoriumID);
+
+        }
+
+    });
+
+    //create
+    $("#btnSubmit").click(function () {
+        var selected = [];
+        var entity = {};
+        $('input[name=ck]:checked').each(function () {
+            /* alert($(this).val());*/
+            var item1 = {};
+            item1.Row_No = $(this).val();
+            item1.IsChecked = true;
+            selected.push(item1);
+        });
+        entity.BlockRowID = $("#hdnBlockRowID").val();
+        entity.AuditoriumID = $("#ddlAuditorium").val();
+        entity.BlockId = $("#ddlBlock").val();
+        entity.RowNumber = selected;
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/BlockRowMapping/AddBlockMap",
+                    data: entity,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["SMId"] != undefined) {
+                            alert(result);
+                            window.location.href = "/BlockRowMapping/ViewSlotMapping";
+                        }
+                        else {
+                            alert(result);
+                            window.location.href = "/BlockRowMapping/ViewSlotMapping";
+                            reset();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+
+            }
+        }
+    });
+    function Edit(AuditoriumID, BlockId) {
+        $.ajax({
+            url: "/BlockRowMapping/SlotMappingGetById?AuditoriumID=" + AuditoriumID + "&BlockId=" + BlockId,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnBlockRowID').val(Result[0].BlockRowID);
+                $('#ddlAuditorium').val(Result[0].AuditoriumID);
+                $.ajax({
+                    url: "/BlockRowMapping/GetBlockbyid?AuditoriumID=" + Result[0].AuditoriumID,
+                    type: "GET",
+                    success: function (Results) {
+                        data = JSON.parse(Results);
+                        var v = "<option value='0'>--Select--</option>";
+                        $.each(data, function (i, item) {
+                            v += "<option value=" + item.BlockId + ">" + item.BlockName + "</option>";
+                        });
+                        $("#ddlBlock").html(v);
+                        $('#ddlBlock').val(Result[0].BlockId);
+
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+                $.each(Result, function (i, item) {
+                    $("input[type=checkbox][value=" + item.Row_No + "]").prop("checked", true);
+                });
+                $('#checkboxlist').find(':checkbox').each(function () {
+                    $(this).attr('checked', $('#' + id).is(':checked'));
+                });
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    function GetBlockByAId() {
+        $.ajax({
+            url: "/BlockRowMapping/GetBlockbyid?AuditoriumID=" + $('#ddlAuditorium').val(),
+
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option  value=" + item.BlockId + ">" + item.BlockName + "</option>";
+                });
+                $("#ddlBlock").html(v);
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+
+
+    function GetRowByAId() {
+
+        $.ajax({
+            url: "/BlockRowMapping/GetRowkbyid?AuditoriumID=" + $('#ddlAuditorium').val(),
+
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = '';
+                $.each(data, function (i, item) {
+                    v += '<input type="checkbox" name="ck" id="' + (i + 1) + '" value=' + item.Row_No + ' />' + '<label for=' + item.Row_No + '>' + item.RowDesc + '</label></div>' + '<br/>';
+                });
+                $("#checkboxlist").html(v);
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+
+    }
+    function GetRowByAIdEdit(x) {
+
+        $.ajax({
+            url: "/BlockRowMapping/GetRowkbyid?AuditoriumID=" + x,
+
+            type: "GET",
+            success: function (result) {
+                data = JSON.parse(result);
+                var v = '';
+                $.each(data, function (i, item) {
+                    v += '<input type="checkbox" name="ck" id="' + (i + 1) + '" value=' + item.Row_No + ' />' + '<label for=' + item.Row_No + '>' + item.RowDesc + '</label></div>' + '<br/>';
+                });
+                $("#checkboxlist").html(v);
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+
+
+    }
+    //validate
+    function validate() {
+        if ($('#ddlAuditorium').val() == "0") {
+            alert("Enter Auditorium Name !");
+            return false;
+            $('#ddlAuditorium').focus();
+        }
+        else if ($('#ddlBlock').val() == "0") {
+            alert("Please enter Block !");
+            return false;
+            $('#ddlBlock').focus();
+        }
+
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+</script>

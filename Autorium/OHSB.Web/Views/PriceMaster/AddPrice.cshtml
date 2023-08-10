@@ -1,0 +1,291 @@
+﻿@model OHSB.Domain.PriceMaster.PriceEntity
+@{
+    ViewData["Title"] = "AddPrice";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="PriceMaster" asp-action="AddPrice">AddPrice</a>
+                    <a class="nav-item nav-link " asp-controller="PriceMaster" asp-action="ViewPrice">ViewPrice</a>
+
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS BlockMaster/AddBlock
+                //  ===================================================*@
+
+        <div class="card-body">
+            <div class="form-group col-md-4">
+                <input id="hdnPriceId" class="form-control" hidden />
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Auditorium <span class="text-danger">*</span></label>
+                <div class="col-6 col-md-6 col-xl-4">
+                    <select id="ddlAuditorium" onchange="GetBlockByAId()" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                        <option value="0">--Select--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Block <span class="text-danger">*</span></label>
+                <div class="col-6 col-md-6 col-xl-4">
+                    <select id="ddlBlock" onchange="GetRowById()" class="form-control">
+                        <option value="0">--Select--</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Rows<span class="text-danger">*</span></label>
+                <div class="col-6 col-md-6 col-xl-4">
+                    <select id="ddlRow" class="form-control">
+                        <option value="0">--Select--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input">Price<span class="text-danger">*</span></label>
+                <div class="col-6 col-md-6 col-xl-4">
+                    <input type="text" id="txtPrice"  class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                    <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                    <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddPrice', 'gldata', 'plsubmission', 'AddPrice', '', 'AddPrice');
+        var PriceId = getUrlVars()["PriceId"];
+        if (PriceId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(PriceId)
+        }
+
+    });
+
+</script>
+<script type="text/javascript">
+    function GetBlockByAId() {
+        $.ajax({
+            url: "/PriceMaster/GetBlockbyAuditoriumid?AuditoriumID=" + $('#ddlAuditorium').val(),
+            type: "GET",
+            success: function (Result) {
+                data = JSON.parse(Result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.BlockId + ">" + item.BlockName + "</option>";
+                });
+                $("#ddlBlock").html(v);
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+    function GetRowById() {
+        $.ajax({
+            url: "/PriceMaster/GetRowkbyid?BlockId=" + $('#ddlBlock').val() ,
+            type: "GET",
+            success: function (Result) {
+                data = JSON.parse(Result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.Row_No + ">" + item.RowDesc + "</option>";
+                });
+                $("#ddlRow").html(v);
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+    //insert
+    $("#btnSubmit").click(function () {
+        var doc = {
+            PriceId: $("#hdnPriceId").val(),
+            AuditoriumID: $("#ddlAuditorium").val(),
+            BlockId: $("#ddlBlock").val(),
+            Row_No: $("#ddlRow").val(),
+            Price: $("#txtPrice").val()
+
+
+        };
+
+       if (validate()) {
+            //    && NamevalidationC('txtName', 'lblErrorName') == true
+            //    && Pricevalidate('price', 'lblerrorprice') == true) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/PriceMaster/AddPrice",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["PriceId"] != undefined) {
+                            alert(result)
+                            location.href = "/PriceMaster/ViewPrice";
+                        }
+                        else
+                            alert(result);
+                        location.href = "/PriceMaster/ViewPrice";
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+        //}
+
+    });
+    function fillrows() {
+        $.ajax({
+            url: "/PriceMaster/GetRowkbyid?BlockId=" + $('#ddlBlock').val(),
+            type: "GET",
+            success: function (Result) {
+                data = JSON.parse(Result);
+                var v = "<option value='0'>--Select--</option>";
+                $.each(data, function (i, item) {
+                    v += "<option value=" + item.Row_No + ">" + item.RowDesc + "</option>";
+                });
+                $("#ddlRow").html(v);
+
+            },
+            error: function (error) {
+                jsonValue = jQuery.parseJSON(error.responseText);
+                alert("Error : " + jsonValue);
+            }
+        });
+    }
+    //UPDATE
+    function Edit(PriceId) {
+        $.ajax({
+            url: "/PriceMaster/Getbyid?PriceId=" + PriceId,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Results) {
+                $('#hdnPriceId').val(Results.PriceId);
+                $('#ddlAuditorium').val(Results.AuditoriumID);             
+                //$('#ddlRow').val(Results.Row_No);
+                $('#txtPrice').val(Results.Price);
+                $.ajax({
+                    url: "/PriceMaster/GetBlockbyAuditoriumid?AuditoriumID=" + $('#ddlAuditorium').val(),
+                    type: "GET",
+                    success: function (Result) {
+                        data = JSON.parse(Result);
+                        var v = "<option value='0'>--Select--</option>";
+                        $.each(data, function (i, item) {
+                            v += "<option value=" + item.BlockId + ">" + item.BlockName + "</option>";
+                        });
+                        $("#ddlBlock").html(v);
+                        $('#ddlBlock').val(Results.BlockId);
+                        $.ajax({
+                            url: "/PriceMaster/GetRowkbyid?BlockId=" + $('#ddlBlock').val(),
+                            type: "GET",
+                            success: function (Result) {
+                                data = JSON.parse(Result);
+                                var v = "<option value='0'>--Select--</option>";
+                                $.each(data, function (i, item) {
+                                    v += "<option value=" + item.Row_No + ">" + item.RowDesc + "</option>";
+                                });
+                                $("#ddlRow").html(v);
+                                $('#ddlRow').val(Results.Row_No);
+
+                            },
+                            error: function (error) {
+                                jsonValue = jQuery.parseJSON(error.responseText);
+                                alert("Error : " + jsonValue);
+                            }
+                        });
+                        
+
+                    },
+                    error: function (error) {
+                        jsonValue = jQuery.parseJSON(error.responseText);
+                        alert("Error : " + jsonValue);
+                    }
+                });
+               
+
+            },
+           
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    $("#btnCancel").click(function () {
+        if ($("#hdnPriceId").val() != '') {
+            window.location.href = "/PriceMaster/ViewPrice";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#hdnPriceId').val("");
+        $('#ddlAuditorium').val("0");
+        $('#ddlBlock').val("0");
+        $('#ddlRow').val("0");
+        $('#txtPrice').val("");
+
+
+    }
+    //validation
+    function validate() {
+        if ($('#ddlAuditorium').val() == "0") {
+            alert("Please Enter Auditorium!");
+            $('#ddlAuditorium').focus();
+            return false;
+        }
+        else if ($('#ddlBlock').val() == "0") {
+            alert("Please Enter Block!");
+            $('#ddlBlock').focus();
+            return false;
+        }
+        else if ($('#ddlRow').val() == "0") {
+            alert("Please Enter Row!");
+            $('#ddlRow').focus();
+            return false;
+        }
+        else if ($('#txtPrice').val() == "") {
+            alert("Please Enter Price!");
+            $('#txtPrice').focus();
+            return false;
+        }
+        else
+            return true;
+    }
+    </script>

@@ -1,0 +1,172 @@
+﻿@model OHSB.Domain.BlockMaster.BlockEntity
+@{
+    ViewData["Title"] = "AddBlock";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="BlockMaster" asp-action="AddBlock">AddBlock</a>
+                    <a class="nav-item nav-link " asp-controller="BlockMaster" asp-action="ViewBlock">ViewBlock</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS BlockMaster/AddBlock
+                //  ===================================================*@
+
+            <div class="card-body">
+                <div class="form-group row">
+                    <input type="hidden" value="0" id="hdntypeId" />
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <label class="control-label">Auditorium<span class="text-danger">*</span></label>
+                        <select id="ddltype" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <label class="control-label" for="RegstrationNo">BlockName<span class="text-danger">*</span></label>
+                        <input id="txtBlockName" class="form-control" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+
+                    <input id="hdnBlockId" class="form-control" hidden />
+                </div>
+              
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/validation/validation.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddBlock', 'gldata', 'plsubmission', 'AddBlock', '', 'AddBlock');
+        var BlockId = getUrlVars()["BlockId"];
+        if (BlockId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(BlockId)
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript"> 
+    $("#btnSubmit").click(function () {
+        var doc = {
+            BlockId: $("#hdnBlockId").val(),
+            BlockName: $("#txtBlockName").val(),
+            AuditoriumID: $("#ddltype").val()
+        };
+
+        if (validate()) {
+      
+        if (confirm("Are you sure you want to Submit ?")) {
+            $.ajax({
+                url: "/BlockMaster/AddBlock",
+                data: doc,
+                type: "POST",
+                success: function (result) {
+                    if (getUrlVars()["BlockId"] != undefined) {
+                        alert(result)
+                        location.href = "/BlockMaster/ViewBlock";
+                    }
+                    else
+                        alert(result);
+                    location.href = "/BlockMaster/ViewBlock";
+                    reset();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        }
+
+    });
+
+
+
+    $("#btnCancel").click(function () {
+        if ($("#hdnBlockId").val() != '') {
+            window.location.href = "/BlockMaster/ViewBlock";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#hdnBlockId').val("");
+        $('#ddltype').val("0");
+        $("#txtBlockName").val("");
+    }
+
+    ////UPDATE
+    function Edit(BlockId) {
+
+        $.ajax({
+            url: "/BlockMaster/Getbyid?BlockId=" + BlockId,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnBlockId').val(Result.BlockId);
+                $('#ddltype').val(Result.AuditoriumID);
+                $("#txtBlockName").val(Result.BlockName);
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    function validate() {
+        if ($('#ddltype').val() == "0") {
+            alert("Enter Auditorium Name !");
+            return false;
+            $('#ddltype').focus();
+        }
+        else if ($('#txtBlockName').val() == "") {
+            alert("Please enter the Block !");
+            return false;
+            $('#txtBlockName').focus();
+        }
+
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+
+</script>
+
+
+

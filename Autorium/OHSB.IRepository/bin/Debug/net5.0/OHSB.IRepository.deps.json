@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "OHSB.IRepository/1.0.0": {
+        "dependencies": {
+          "OHSB.Domain": "1.0.0"
+        },
+        "runtime": {
+          "OHSB.IRepository.dll": {}
+        }
+      },
+      "OHSB.Domain/1.0.0": {
+        "runtime": {
+          "OHSB.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "OHSB.IRepository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "OHSB.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

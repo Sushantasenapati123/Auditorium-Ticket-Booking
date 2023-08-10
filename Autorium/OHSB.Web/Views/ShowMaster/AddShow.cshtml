@@ -1,0 +1,187 @@
+﻿@model OHSB.Domain.ShowsMaster.ShowEntity
+@{
+    ViewData["Title"] = "AddShow";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="ShowMaster" asp-action="AddShow">AddShow</a>
+                    <a class="nav-item nav-link " asp-controller="ShowMaster" asp-action="ViewShow">ViewShow</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            @*//  BASIC FORM ELEMENTS
+                //  ===================================================*@
+
+            <div class="card-body">
+                <div class="form-group row">
+                    <input type="hidden" value="0" id="hdntypeId" />
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <label class="control-label">Auditorium<span class="text-danger">*</span></label>
+                        <select id="ddltype" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <label class="control-label" for="RegstrationNo">Show Name<span class="text-danger">*</span></label>
+                        <input id="txtshowname" class="form-control" />
+                        <span id="lblErrorName" style="color:red"></span>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+
+                    <input id="hdnshowId" class="form-control" hidden />
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4 justify-content-center">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/validation/validation.js"></script>
+<script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('AddShow', 'gldata', 'plsubmission', 'AddShow', '', 'AddShow');
+        var ShowID = getUrlVars()["ShowID"];
+        if (ShowID != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(ShowID)
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnSubmit").click(function () {
+        var doc = {
+            ShowID: $("#hdnshowId").val(),
+            ShowName: $("#txtshowname").val(),
+            AuditoriumID: $("#ddltype").val()
+        };
+
+        //if (validate()
+        //    && NamevalidationC('txtName', 'lblErrorName') == true
+        //    && Pricevalidate('price', 'lblerrorprice') == true) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/ShowMaster/AddShow",
+                    data: doc,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["ShowID"] != undefined) {
+                            alert(result)
+                            location.href = "/ShowMaster/ViewShow";
+                        }
+                        else
+                            alert(result);
+                        location.href = "/ShowMaster/ViewShow";
+                        reset();
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+
+        //}
+
+    });
+
+
+
+    $("#btnCancel").click(function () {
+        if ($("#hdnshowId").val() != '') {
+            window.location.href = "/ShowMaster/ViewShow";
+        }
+        else
+            reset();
+    })
+    function reset() {
+        $('#hdnshowId').val("");
+        $('#ddltype').val("0");
+        $("#txtshowname").val("");
+    }
+
+    //UPDATE
+    function Edit(ShowID) {
+
+        $.ajax({
+            url: "/ShowMaster/Getbyid?ShowID=" + ShowID,
+            type: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (Result) {
+                $('#hdnshowId').val(Result.ShowID);
+                $('#ddltype').val(Result.AuditoriumID);
+                $("#txtshowname").val(Result.ShowName);
+                
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    //validation
+    //function validate() {
+    //    if ($('#ddlDignosisValue').val() == 0) {
+    //        alert("Please Select Dignosis Name!");
+    //        $('#ddlDignosisValue').focus();
+    //        return false;
+    //    }
+    //    else if ($('#testName').val() == "") {
+    //        alert("Please Enter Test Name!");
+    //        $('#testName').focus();
+    //        return false;
+    //    }
+    //    else if ($('#price').val() == "") {
+    //        alert("Please Enter Price!");
+    //        $('#price').focus();
+    //        return false;
+    //    }
+    //    else
+    //        return true;
+    //}
+    //$("#btnCancel").click(function () {
+    //    if ($("#LabTestId").val() != '') {
+    //        window.location.href = "/LabTest/ViewLabTest";
+    //    }
+    //    else
+    //        reset();
+    //})
+    //function reset() {
+    //    $('#ddlDignosisValue').val("0");
+    //    $("#testName").val("");
+    //    $("#price").val("");
+    //}
+
+</script>
+
+

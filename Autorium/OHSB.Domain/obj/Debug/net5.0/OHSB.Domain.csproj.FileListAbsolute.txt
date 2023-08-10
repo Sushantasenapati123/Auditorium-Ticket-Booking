@@ -1,0 +1,48 @@
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.deps.json
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\bin\Debug\net5.0\ref\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfoInputs.cache
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfo.cs
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.CoreCompileInputs.cache
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\ref\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\subhasmita.nayak\source\repos\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.AssemblyReference.cache
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.deps.json
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\bin\Debug\net5.0\ref\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.AssemblyReference.cache
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfoInputs.cache
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfo.cs
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.CoreCompileInputs.cache
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\ref\OHSB.Domain.dll
+C:\Users\subhasmita.nayak\Desktop\BookingMangement\OHSB (2)\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.deps.json
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfoInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfo.cs
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.CoreCompileInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\ref\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.AssemblyReference.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\subhasmita\OHSB (2)Update\OHSB\OHSB.Domain\obj\Debug\net5.0\refint\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.deps.json
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\bin\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.AssemblyReference.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfoInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.AssemblyInfo.cs
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.csproj.CoreCompileInputs.cache
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\refint\OHSB.Domain.dll
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\OHSB.Domain.pdb
+C:\Users\sushanta.senapati\Desktop\Auditorium\Auditorium-Ticket-Booking\Autorium\OHSB.Domain\obj\Debug\net5.0\ref\OHSB.Domain.dll

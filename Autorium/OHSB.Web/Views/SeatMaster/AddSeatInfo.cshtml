@@ -1,0 +1,177 @@
+﻿@model OHSB.Domain.SeatMaster.SeatEntity
+@{
+    ViewData["Title"] = "AddSeatInfo";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+}
+
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link active" asp-controller="SeatMaster" asp-action="AddSeatInfo">AddSeat</a>
+                    <a class="nav-item nav-link" asp-controller="SeatMaster" asp-action="ViewSeatInfo">ViewSeat</a>
+                    <a class="nav-item nav-link " asp-controller="SeatMaster" asp-action="DemoSeatDesign">Demo</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>
+            </div>
+            <!-- BASIC FORM ELEMENTS -->
+            <!--===================================================-->
+            <div class="card-body">
+                <input type="hidden" value="0" id="hdnSeatId" />
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"><b>Auditorium Name</b><span class="text-danger">*</span></label>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <select id="ddlAuditoriumName" class="form-control" asp-items="@(new SelectList(ViewBag.AuditoriumID,"AuditoriumID","AuditoriumName"))" asp-for="AuditoriumID">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"><b>Rows Details</b><span class="text-danger">*</span></label>
+                    <div class="col-xs-12 col-md-4 col-xl-4">
+                        <select id="ddlRowName" class="form-control" asp-items="@(new SelectList(ViewBag.Row_No,"Row_No","RowDesc"))" asp-for="Row_No">
+                            <option value="0">--Select--</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label" for="demo-email-input"><b>SeatCapcity</b> <span class="text-danger">*</span></label>
+                    <div class="col-12 col-md-4 col-xl-4">
+                        <input type="text" id="txtSeatCapcity" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-12 col-md-2 col-xl-2 control-label"></label>
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <button class="btn btn-primary mb-1" id="btnSubmit">Submit</button>
+                        <button class="btn btn-danger mb-1" id="btnCancel">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--===================================================-->
+        <!-- END BASIC FORM ELEMENTS -->
+    </div>
+</div>
+<Script>
+    $(document).ready(function () {
+        //breadcumb
+        loadNavigation('Add Seat', 'gldata', 'plsubmission', 'Add Seat', '', 'Add Seat');
+        var SeatId = getUrlVars()["SeatId"];
+        if (SeatId != undefined) {
+            $("#btnSubmit").html("Update");
+            $("#btnCancel").html("Cancel");
+            Edit(SeatId);
+        }
+    });
+    $("#btnSubmit").click(function () {
+        var dept = {
+            SeatId: $("#hdnSeatId").val(),
+            AuditoriumID: $("#ddlAuditoriumName").val(),
+            Row_No: $("#ddlRowName").val(),
+            SeatCapacity: $("#txtSeatCapcity").val()
+
+        };
+        if (validate()) {
+            if (confirm("Are you sure you want to Submit ?")) {
+                $.ajax({
+                    url: "/SeatMaster/AddSeatInfo",
+                    data: dept,
+                    type: "POST",
+                    success: function (result) {
+                        if (getUrlVars()["SeatId"] != undefined) {
+                            alert(result)
+                            //window.location.href = "/SubMenu/ViewSubMenu";
+                        }
+                        else {
+                            alert(result);
+                            reset();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+    });
+
+    //reset
+
+    $("#btnCancel").click(function () {
+        if ($("#hdnSeatId").val() == '0') {
+            reset();
+            window.location.href = "/SeatMaster/AddSeatInfo";
+           
+        }
+        else {
+            window.location.href = "/SeatMaster/ViewSeatInfo";
+            reset();
+           
+        }
+
+    })
+    function reset() {
+        $('#hdnSeatId').val("");
+        $('#ddlAuditoriumName').val("0");
+        $('#ddlRowName').val("0");
+        $('#txtSeatCapcity').val("");
+
+
+    }
+    //UPDATE
+    function Edit(SeatId) {
+        $.ajax({
+            url: "/SeatMaster/SeatGetById?SeatId=" + SeatId,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $("#ddlAuditoriumName").val(result.AuditoriumID),
+                    $("#ddlRowName").val(result.Row_No),
+                    $("#txtSeatCapcity").val(result.SeatCapacity),
+                    $("#hdnSeatId").val(result.SeatId)
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function validate() {
+        if ($('#ddlAuditoriumName').val() == "0") {
+            alert("Enter Auditorium Name !");
+            return false;
+            $('#ddlAuditoriumName').focus();
+        }
+        else if ($('#ddlRowName').val() == "0") {
+            alert("Please RowName type !");
+            return false;
+            $('#ddlRowName').focus();
+        }
+        else if ($('#txtSeatCapcity').val() == "") {
+            alert("Please enter the seat capacity !");
+            return false;
+            $('#txtSeatCapcity').focus();
+        }      
+
+        else {
+            $("#btnReset").hide();
+            return true;
+        }
+    }
+</Script>

@@ -1,0 +1,142 @@
+﻿@model Auditorium.Domain.BookingMaster.BookingMaster
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "ViewBooking";
+    Layout = "~/Views/Shared/_LayoutDynamic.cshtml";
+    var ResultData = ViewBag.Result as List<Auditorium.Domain.BookingMaster.BookingMaster>;
+}
+<div class="page-title">
+    <div class="title-details">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-0 mb-0 bg-transparent" id="navigation">
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            View Ticket
+            @*<div class="card-header">
+                <ul class="nav nav-tabs nav-fill" role="tablist">
+                    <a class="nav-item nav-link" asp-controller="Booking" asp-action="ViewSeats">View Seats</a>
+                    <a class="nav-item nav-link active" asp-controller="Booking" asp-action="ViewBooking">View Booking</a>
+                </ul>
+                <div class="indicatorslist">
+                    <a title="" href="javascript:void(0)" id="backIcon" data-toggle="tooltip" data-placement="top" data-original-title="Back"><i class="icon-arrow-left1"></i></a>
+                    <p class="ml-2">(*) Indicates mandatory </p>
+                </div>*@
+            </div>
+            @*//  BASIC FORM ELEMENTS
+                //  ===================================================*@
+            @{
+                string Usertype = ViewContext.HttpContext.Session.GetString("UserType");
+            }
+
+            <div class="card-body ">
+                @if (ResultData != null && ResultData.ToList().Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table data-toggle="table" id="seatTable" class="table" data-page-list="[10,25,50]">
+                            <thead>
+                                <tr>
+                                    <th width="60px" class="align-top text-center">Sl#</th>
+                                    <th width="150px" class="align-top">Date Of Booking</th>
+                                    <th width="150px" class="align-top">User Name</th>
+                                    <th width="180px" class="align-top">Auditorium Name</th>
+                                    <th width="120px" class="align-top">Block Name</th>
+                                    <th width="120px" class="align-top">Row Name</th>
+                                    <th width="120px" class="align-top">Seat Names</th>
+                                    @if (Usertype == "Admin")
+                                    {
+                                        <th width="120px" class="align-top">Action</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int count = 1;
+                                }
+                                @foreach (var group in ResultData.GroupBy(d => new { d.BookingDate, d.UserName, d.AuditoriumName, d.BlockName, d.RowName }))
+                                {
+                                    <tr>
+                                        <td class="text-center">@count</td>
+                                        <td>@group.Key.BookingDate.ToShortDateString()</td>
+                                        <td>@group.Key.UserName</td>
+                                        <td>@group.Key.AuditoriumName</td>
+                                        <td>@group.Key.BlockName</td>
+                                        <td>@group.Key.RowName</td>
+                                        <td>@string.Join(", ", group.Select(d => d.SeatName))</td>
+
+                                        @if (Usertype == "Admin")
+                                        {
+                                            <td>
+                                                @*<a onclick="updateDepartment('@group.First().Id');" class="text-primary mr-3" title="" data-original-title="Edit"><i class="icon-edit1"></i><b>Edit</b></a><br />*@
+                                                <a onclick="deleteDoctor('@group.First().Id');" class="text-danger" title="" data-original-title="Delete"><i class="icon-trash-21"></i><b>Delete</b></a>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="norecord"> No Record Found</div>
+                }
+
+
+                <div class="clearfix col-sm-12"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#seatTable').DataTable({
+            pageLength: 25
+        });
+    });
+
+
+    //function updateDepartment(Id) {
+    //    if (confirm("Are you sure you want to update ?")) {
+    //        location.href = "/Booking/ViewSeats?Id=" + Id;
+    //    }
+    //}
+
+    function deleteDoctor(Id) {
+        if (confirm("Are you sure you want to delete ?")) {
+            $.ajax({
+                url: "/Booking/Delete?Id=" + Id,
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == "3") {
+                        alert(" Deleted Successfully");
+                        window.location.reload();
+                    }
+                    else if (data == "4") {
+                        alert(" Already In Use!");
+                        window.location.reload();
+                    }
+                    else { }
+                },
+                error: function (error) {
+                    jsonValue = jQuery.parseJSON(error.responseText);
+                    bootbox.alert("Error : " + jsonValue);
+                }
+            });
+        }
+    }
+
+
+
+</script>
